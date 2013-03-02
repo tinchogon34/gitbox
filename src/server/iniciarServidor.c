@@ -16,8 +16,7 @@ int iniciarServidor (char *puerto)
 {
   int fd, opc = 1, sfd;
   struct addrinfo Direccion,*res,*resave;
-  struct sockaddr_storage peer_addr;	
-
+  struct sockaddr_storage peer_addr;
 
   bzero(&Direccion,sizeof (struct addrinfo));
   Direccion.ai_family = AF_UNSPEC; 

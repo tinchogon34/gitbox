@@ -43,8 +43,7 @@ int recuperarParametros(int argc, char * const argv[])
 				}
 			}
 	*/
-		return 3000;
-
+		return "3000";
 	}
 }
 
