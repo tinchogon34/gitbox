@@ -15,8 +15,7 @@
 int iniciarServidor (char *puerto)
 {
   int fd, opc = 1, sfd;
-  struct addrinfo Direccion,*res,*resave;
-  struct sockaddr_storage peer_addr;
+  struct addrinfo Direccion,*res;
 
   bzero(&Direccion,sizeof (struct addrinfo));
   Direccion.ai_family = AF_UNSPEC; 
@@ -27,7 +26,6 @@ int iniciarServidor (char *puerto)
     perror("getaddrinfo:");
     exit(EXIT_FAILURE);
   }
-  resave = res;
   do
   {
     sfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
@@ -39,6 +37,7 @@ int iniciarServidor (char *puerto)
       exit(EXIT_FAILURE);
     }                 
   }while((res=res->ai_next)!=NULL);
+  freeaddrinfo(result);
   listen(sfd,10);
   return sfd;
 }
