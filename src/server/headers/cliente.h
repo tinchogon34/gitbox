@@ -7,13 +7,14 @@
 	#include <netdb.h>
 	#include <pthread.h>
 
-	typedef struct USUARIO {
-		char fase[20];
-		char id[20];
-		char password[20];
-		int logStatus;
-	} Usuario;
+	typedef struct DATOSUSUARIO {
+		char username[30];
+		char password[30];
+    char usernameGit[30];
+    char passwordGit[30];
+	} DatosUsuario;
 
 	void * atenderCliente (void *);	
 
+  int validarUsuarioMensaje (char *, DatosUsuario *);
 #endif

@@ -13,10 +13,10 @@ void* atenderCliente(void *fd)
 	int fd_cliente = (int)(int*)fd;
 	char mensaje[256];
 	int bytesLeidos, valor, flag;
-/*	Orden orden;
+//	Orden orden;
   
-	//Usuario usuario;
-	Lista lista = NULL;
+	DatosUsuario datosUsuario;
+	/*Lista lista = NULL;
 
 	memset(usuario.id, 0, sizeof usuario.id);
 	memset(mensaje, 0, sizeof mensaje);
@@ -45,6 +45,13 @@ void* atenderCliente(void *fd)
 	{
     
 		write (1, mensaje, bytesLeidos);
+
+    if(validarUsuarioMensaje(mensaje, &datosUsuario) == -1){
+      	pthread_exit(NULL);
+		    return NULL;
+    }
+
+    write (1, datosUsuario.usernameGit, sizeof(datosUsuario.usernameGit));
 		/*orden = parsearOrden(mensaje);
 
 		int valor = verificarOrden (orden.comando);
