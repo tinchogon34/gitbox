@@ -1,11 +1,8 @@
 #include "headers/cliente.h"
-#include "headers/orden.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/socket.h>
 #include <string.h>
-#include "headers/mail.h"
-#include "headers/cola.h"
 #include <pthread.h>
 
 int clientesConectados = 0;
@@ -16,18 +13,18 @@ void* atenderCliente(void *fd)
 	int fd_cliente = (int)(int*)fd;
 	char mensaje[256];
 	int bytesLeidos, valor, flag;
-	Orden orden;
-	Usuario usuario;
+/*	Orden orden;
+  
+	//Usuario usuario;
 	Lista lista = NULL;
 
 	memset(usuario.id, 0, sizeof usuario.id);
 	memset(mensaje, 0, sizeof mensaje);
 	memset(orden.comando, 0, sizeof orden.comando);
 	memset(orden.arg1, 0, sizeof orden.arg1);
-	memset(orden.arg2, 0, sizeof orden.arg2);
+	memset(orden.arg2, 0, sizeof orden.arg2);*/
 	
-	if((write(fd_cliente,"+OK Servidor POP Listo!\n", 24))==-1){
-
+	if((write(fd_cliente,"Ola qase\n", 9))==-1){
 		perror("Write: \n");
 		pthread_exit(NULL);
 		return NULL;
@@ -35,19 +32,20 @@ void* atenderCliente(void *fd)
 	else
 	{
 		// El usuario esta en fase de autorizacion
-		strcpy (usuario.fase, "autorizacion");
+		//strcpy (usuario.fase, "autorizacion");
 
 		// Se incrementa la cantidad de clientes conectados
-		pthread_mutex_lock (&mute);
+		//pthread_mutex_lock (&mute);
 		clientesConectados++;
-		pthread_mutex_unlock (&mute);	
+		//pthread_mutex_unlock (&mute);	
 		printf ("Clientes Conectados: %d\n", clientesConectados);
 	}
 
 	while((bytesLeidos = read (fd_cliente, mensaje, sizeof mensaje)) > 0)
 	{
+    
 		write (1, mensaje, bytesLeidos);
-		orden = parsearOrden(mensaje);
+		/*orden = parsearOrden(mensaje);
 
 		int valor = verificarOrden (orden.comando);
 
@@ -141,7 +139,7 @@ void* atenderCliente(void *fd)
 				write(fd_cliente, "-ERR Orden Invalida \r\n", 22);
 				memset (orden.arg1, 0, sizeof orden.arg1);
 
-		}
+		}*/
 	}	
 }
 

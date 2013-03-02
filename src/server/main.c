@@ -42,7 +42,7 @@ int main (int argc, char * const argv[])
 	while ((fd_cliente = accept (fd, &cliente, &longitud_cliente)) > 0)
 	{
 		printf ("Cliente conectado\n");
-		//pthread_create (&tid, NULL, atenderCliente, (void *)fd_cliente);
+		pthread_create (&tid, NULL, atenderCliente, (void *)fd_cliente);
 	}
 }
 

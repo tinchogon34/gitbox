@@ -37,7 +37,7 @@ int iniciarServidor (char *puerto)
       exit(EXIT_FAILURE);
     }                 
   }while((res=res->ai_next)!=NULL);
-  freeaddrinfo(result);
+  freeaddrinfo(res);
   listen(sfd,10);
   return sfd;
 }
