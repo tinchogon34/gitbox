@@ -50,8 +50,8 @@ void* atenderCliente(void *fd)
       	pthread_exit(NULL);
 		    return NULL;
     }
-
-    write (1, datosUsuario.usernameGit, sizeof(datosUsuario.usernameGit));
+    write(1,"joya",4);
+    //write (1, datosUsuario.usernameGit, sizeof(datosUsuario.usernameGit));
 		/*orden = parsearOrden(mensaje);
 
 		int valor = verificarOrden (orden.comando);
