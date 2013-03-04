@@ -12,17 +12,20 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-int iniciarServidor (char *puerto)
+int iniciarServidor (int puerto)
 {
   int fd, opc = 1, sfd;
   struct addrinfo Direccion,*res;
+  char auxport[10];
+
+  sprintf(auxport,"%d",puerto);
 
   bzero(&Direccion,sizeof (struct addrinfo));
   Direccion.ai_family = AF_UNSPEC; 
   Direccion.ai_socktype= SOCK_STREAM; 
   Direccion.ai_flags = AI_PASSIVE; 
-
-  if((getaddrinfo(NULL,puerto,&Direccion,&res))!=0){
+// TODO Harcodie el puerto MAL jaja
+  if((getaddrinfo(NULL,auxport,&Direccion,&res))!=0){
     perror("getaddrinfo:");
     exit(EXIT_FAILURE);
   }

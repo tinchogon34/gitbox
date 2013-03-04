@@ -13,14 +13,19 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
   char * passwordMensaje = strtok(NULL, " ");
   char lineas[100][100];
   char *token, *usuario, *password;
-  char buffer[100];
+  char buffer[200];
   int i = 0, fd, linea = 0;
+  int maxI = 0;
+  char itoaAux[20];
 
-  write(1, "ee", 2);
+  
+  write(1, passwordMensaje, strlen(passwordMensaje));write(1, "\n", 1);
 
   if(strcmp(comando, "PULL") != 0){
     return -1;
   }
+
+ write(1, "comando pull", 12); write(1, "\n", 1);
 
   if ((fd = open ("user_config.cfg", O_RDONLY)) < 0)
   {
@@ -31,6 +36,8 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
   read (fd, buffer, sizeof buffer);
   close (fd);
 
+  //porq hay pocos usuarios alcanza sin while
+
   token = strtok(buffer, "\n");
   strcpy(lineas[0], token);
   while((token = strtok(NULL,"\n")) != NULL){
@@ -38,23 +45,47 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
     strcpy(lineas[i], token);
   }
 
+  maxI=i;
 
-  for(i = 0; i<100;i++){
+  for(i = 0; i<=maxI;i++){
+
     usuario = strtok(lineas[i], ":");
     password = strtok(NULL,":");
-    printf(usuario);
-    printf(password);
-   /* if((strcmp(usuarioMensaje, usuario) == 0) && (strcmp(passwordMensaje, password)) == 0){
-    /*  strcpy(datos->username, usuario);
+
+    write(1, "\n", 1);write(1, usuario, strlen(usuario));write(1, "\n" , 1);
+
+    write(1, password, strlen(password)); write(1, "\n", 1);
+
+    write(1, "usuarioMensaje" , strlen("usuarioMensaje")); write(1, "\n", 1);
+
+    write(1, usuarioMensaje, strlen(usuarioMensaje)); write(1, "\n", 1);
+     
+    write(1, "passwordMensaje" , strlen("passwordMensaje")); write(1, "\n", 1);
+
+    write(1, passwordMensaje, strlen(passwordMensaje));write(1, "\n", 1);
+  
+
+
+   if((strcmp(usuarioMensaje, usuario) == 0) && (strcmp(passwordMensaje, password)) == 0){
+
+    write(1, "atroden" , strlen("atroden"));write(1, "\n", 1);
+ 
+ //El segmentation fault puede estar aca en la estructura o en los strtok, revisar maniana
+      strcpy(datos->username, usuario);
       strcpy(datos->password, password);
       strcpy(datos->usernameGit, strtok(NULL,":"));
       strcpy(datos->passwordGit, strtok(NULL,":"));
+
+      write(1, "\nusuario validado en linea ", strlen("\nusuario validado en linea "));
+      sprintf(itoaAux,"%d",i);
+      write(1, itoaAux, strlen(itoaAux));
+      write(1, "\n", 1);
+
       return 0;
-    }*/
+    }
 
-    return 0;
-  //}
+   // return 0;
   }
-
+  
   return -1;
 }

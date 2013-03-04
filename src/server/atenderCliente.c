@@ -11,7 +11,7 @@ pthread_mutex_t mute = PTHREAD_MUTEX_INITIALIZER;
 void* atenderCliente(void *fd)
 {	
 	int fd_cliente = (int)(int*)fd;
-	char mensaje[256];
+	char mensaje[50];
 	int bytesLeidos, valor, flag;
 //	Orden orden;
   
@@ -40,17 +40,18 @@ void* atenderCliente(void *fd)
 		//pthread_mutex_unlock (&mute);	
 		printf ("Clientes Conectados: %d\n", clientesConectados);
 	}
-
-	while((bytesLeidos = read (fd_cliente, mensaje, sizeof mensaje)) > 0)
+//ACA ESTA EL PROBLEMON
+	 //FIX MAGICO
+	while((bytesLeidos = read (fd_cliente, mensaje, strlen("PULL usuarioX passwordX"))) > 0)
 	{
-    
-		write (1, mensaje, bytesLeidos);
+   
+		
 
     if(validarUsuarioMensaje(mensaje, &datosUsuario) == -1){
       	pthread_exit(NULL);
 		    return NULL;
     }
-    write(1,"joya",4);
+  
     //write (1, datosUsuario.usernameGit, sizeof(datosUsuario.usernameGit));
 		/*orden = parsearOrden(mensaje);
 
