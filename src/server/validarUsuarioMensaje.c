@@ -7,6 +7,26 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
+char *trimwhitespace(char *str)
+{
+  char *end;
+
+  // Trim leading space
+  while(isspace(*str)) str++;
+
+  if(*str == 0)  // All spaces?
+    return str;
+
+  // Trim trailing space
+  end = str + strlen(str) - 1;
+  while(end > str && isspace(*end)) end--;
+
+  // Write new null terminator
+  *(end+1) = 0;
+
+  return str;
+}
+
 int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
   char * comando = strtok(mensaje, " ");
   char * usuarioMensaje = strtok(NULL, " ");
@@ -18,14 +38,11 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
   int maxI = 0;
   char itoaAux[20];
 
+  trimwhitespace(passwordMensaje);
   
-  write(1, passwordMensaje, strlen(passwordMensaje));write(1, "\n", 1);
-
   if(strcmp(comando, "PULL") != 0){
     return -1;
   }
-
- write(1, "comando pull", 12); write(1, "\n", 1);
 
   if ((fd = open ("user_config.cfg", O_RDONLY)) < 0)
   {
@@ -52,40 +69,23 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
     usuario = strtok(lineas[i], ":");
     password = strtok(NULL,":");
 
-    write(1, "\n", 1);write(1, usuario, strlen(usuario));write(1, "\n" , 1);
+    if((strcmp(usuarioMensaje, usuario) == 0) && (strcmp(passwordMensaje, password)) == 0){
+      write(1,"se valido",strlen("se valido"));
 
-    write(1, password, strlen(password)); write(1, "\n", 1);
-
-    write(1, "usuarioMensaje" , strlen("usuarioMensaje")); write(1, "\n", 1);
-
-    write(1, usuarioMensaje, strlen(usuarioMensaje)); write(1, "\n", 1);
-     
-    write(1, "passwordMensaje" , strlen("passwordMensaje")); write(1, "\n", 1);
-
-    write(1, passwordMensaje, strlen(passwordMensaje));write(1, "\n", 1);
-  
-
-
-   if((strcmp(usuarioMensaje, usuario) == 0) && (strcmp(passwordMensaje, password)) == 0){
-
-    write(1, "atroden" , strlen("atroden"));write(1, "\n", 1);
- 
- //El segmentation fault puede estar aca en la estructura o en los strtok, revisar maniana
+      //El segmentation fault puede estar aca en la estructura o en los strtok, revisar maniana
       strcpy(datos->username, usuario);
       strcpy(datos->password, password);
       strcpy(datos->usernameGit, strtok(NULL,":"));
       strcpy(datos->passwordGit, strtok(NULL,":"));
 
-      write(1, "\nusuario validado en linea ", strlen("\nusuario validado en linea "));
-      sprintf(itoaAux,"%d",i);
+      /*sprintf(itoaAux,"%d",i);
       write(1, itoaAux, strlen(itoaAux));
-      write(1, "\n", 1);
+      write(1, "\n", 1);*/
 
       return 0;
     }
 
    // return 0;
   }
-  
   return -1;
 }
