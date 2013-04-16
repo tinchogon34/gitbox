@@ -6,33 +6,31 @@
 #include <pthread.h>
 
 int clientesConectados = 0;
-pthread_mutex_t mute = PTHREAD_MUTEX_INITIALIZER;
 
 void* atenderCliente(void *fd)
 {	
 	int fd_cliente = (int)(int*)fd;
+	int bytesLeidos = 0;
 	char mensaje[50], strAux[300];
-	int bytesLeidos, valor, flag;
-//	Orden orden;
-
 	DatosUsuario datosUsuario;
-	memset(mensaje, 0, sizeof mensaje);
-	memset(strAux, 0, sizeof strAux);
+
+	/********INICIALIZAR*****/
+	bzero(mensaje, sizeof mensaje);
+	bzero(strAux, sizeof strAux);
+	bzero(&datosUsuario, sizeof (struct DATOSUSUARIO));
+	/************************/
 	
-
-
-	if((write(fd_cliente,"Ola qase\n", 9))==-1){
+	if((write(fd_cliente,"Bienvenido a GitBox\n", 20))==-1){
 		perror("Write: \n");
 		pthread_exit(NULL);
 		return NULL;
 	}
-	else
-	{
-		clientesConectados++;	
-		printf ("Clientes Conectados: %d\n", clientesConectados);
-	}
-	 //ACA ESTA EL PROBLEMON
-	 //FIX MAGICO
+	
+	clientesConectados++;	
+	printf ("Clientes Conectados: %d\n", clientesConectados);
+	
+	//ACA ESTA EL PROBLEMON
+	//FIX MAGICO	
 	while((bytesLeidos = read (fd_cliente, mensaje, sizeof mensaje)) > 0)
 	{
 		if(validarUsuarioMensaje(mensaje, &datosUsuario) == -1){
@@ -40,6 +38,7 @@ void* atenderCliente(void *fd)
 			return NULL;
 		}
 
+		/*****ENTRAR A LA CARPETA DEL USUARIO Y HACER GIT PULL****/
 		strcpy(strAux,"cd backups/");
 		strcat(strAux,datosUsuario.username);
 		strcat(strAux,";git pull origin master;");

@@ -13,27 +13,17 @@ Alumnos: Mermoz, Juan Pedro
 
 int main (int argc, char * const argv[])
 {
-	int fd, fd_cliente, longitud_cliente;
+	int fd = 0, fd_cliente = 0, longitud_cliente = 0, puerto = 0;
 	struct sockaddr cliente;
 	pthread_t tid;
-	int puerto;
 
-	/*// Crear proceso paralelo para ejecutar log
-	if (fork() == 0)		
-	{
-		if ((execl("log", "", (char *)NULL)) == -1)
-			perror ("execl()\n");
-	}
-*/
+	/********INICIALIZAR*****/
+  bzero(&cliente,sizeof (struct sockaddr));
+  /************************/
 
 	// Recuperar argumentos de configuracion y tratar argumentos de ayuda
 	if ((puerto = recuperarParametros(argc, argv)) == -1)
 		return -1;
-
-	/*// Iniciar cola de mensajes
-	if (crearCola() == -1)
-		printf ("Cola no creada, no se generaran logs\n");
-	*/
 
 	// Iniciar servidor con el puerto indicado
 	fd = iniciarServidor(puerto);
