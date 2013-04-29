@@ -16,7 +16,8 @@ int main (int argc, char * const argv[])
 {
 	int fd = 0, fd_cliente = 0, longitud_cliente = 0, puerto = 0, 
 			cpid = 0, i = 0, file_fd = 0;
-	int fileSize;
+	off_t fileSize;
+	unsigned long long fileSizeL;
 	struct sockaddr cliente;
 	pthread_t tid;
 	char * dbUsuarios;
@@ -33,13 +34,22 @@ int main (int argc, char * const argv[])
 
   fileSize = lseek(file_fd , 0L , SEEK_END);
   lseek(file_fd,0L, SEEK_SET);
+ fileSizeL=(unsigned long long) fileSize;
+
+
+printf("Tamanio del archivo %llu\n", fileSizeL);
+
+
 
   //char tam[10];
   //itos(tam,(int)fileSize);
   //write(1,tam,strlen(tam));
 
-  dbUsuarios = (char *)malloc(fileSize+1);
-  memset(dbUsuarios,1,sizeof dbUsuarios);
+  dbUsuarios = (char *) malloc(sizeof(char) * (fileSizeL+1) );
+
+
+
+  memset(dbUsuarios,'c',fileSizeL+1);
 
   //read (file_fd, dbUsuarios, sizeof dbUsuarios);
 
