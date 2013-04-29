@@ -1,5 +1,4 @@
 #include "headers/util.h"
-#include <string.h>
 
 char *trimwhitespace(char *str)
 {
@@ -19,4 +18,13 @@ char *trimwhitespace(char *str)
   *(end+1) = 0;
 
   return str;
+}
+
+void die(char *msg){
+  perror(msg); 
+  exit(EXIT_FAILURE);
+}
+
+void itos(char *string, int number){
+  sprintf(string,"%d",number);
 }

@@ -17,8 +17,8 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
   char buffer[512];
 
   /********INICIALIZAR*****/
-  bzero(lineas, sizeof lineas);
-  bzero(buffer, sizeof buffer);
+  memset(lineas, 0, sizeof lineas);
+  memset(buffer, 0, sizeof buffer);
   /************************/
 
   trimwhitespace(passwordMensaje);
@@ -46,20 +46,18 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
     return -1;
   }
   
-  strcpy(lineas[0], token);
-  i++;
+  strcpy(lineas[cantidadLineas], token);
+  cantidadLineas++;
   
   while((token = strtok(NULL,"\n")) != NULL){
-    i++;
-    strcpy(lineas[i], token);
+    cantidadLineas++;
+    strcpy(lineas[cantidadLineas], token);
   }
-
-  cantidadLineas=i;
 
   /*************BUSCAR COINCIDENCIA DE USUARIO - PASSWORD***************/
   //DEBERIAN ESTAR ENCRIPTADOS
 
-  for(i = 0; i<cantidadLineas;i++){
+  for(i = 0; i<=cantidadLineas;i++){
     usuario = strtok(lineas[i], ":");
     password = strtok(NULL,":");
 

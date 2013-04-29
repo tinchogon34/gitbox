@@ -19,15 +19,16 @@ int recuperarParametros(int argc, char * const argv[])
 		switch (opcion)
 		{
 			case 'h':
-				printf ("Uso: %s\n", argv[0]);
-				printf ("-h Muestra esta ayuda\n");
-				printf ("Indique puerto de escucha en archivo: gitbox.cfg\n");
-				return -1;
-				break;
+			printf ("Uso: %s\n", argv[0]);
+			printf ("-h Muestra esta ayuda\n");
+			printf ("Indique puerto de escucha en archivo: gitbox.cfg\n");
+			return -1;
+			break;
 		}
 	}
 	else
 	{
+		//TODO HACER QUE LEA EL PUERTO DEL ARCHIVO DE CFG
 		return 3000;
 	}
 }

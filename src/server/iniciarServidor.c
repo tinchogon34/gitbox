@@ -21,7 +21,7 @@ int iniciarServidor (int puerto)
   sprintf(auxport,"%d",puerto);
 
   /********INICIALIZAR*****/
-  bzero(&Direccion,sizeof (struct addrinfo));
+  memset(&Direccion,0, sizeof (struct addrinfo));
   /************************/
 
   Direccion.ai_family = AF_UNSPEC; 

@@ -14,7 +14,7 @@
     char passwordGit[30];
 	} DatosUsuario;
 
-	void * atenderCliente (void *);	
+	int atenderCliente (int);	
 
   int validarUsuarioMensaje (char *, DatosUsuario *);
 #endif
