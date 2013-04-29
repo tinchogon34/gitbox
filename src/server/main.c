@@ -25,7 +25,7 @@ int main (int argc, char * const argv[])
 	memset(&cliente,0, sizeof (struct sockaddr));
   /************************/
 
-  if ((file_fd = open ("user_config.cfg", O_RDONLY)) < 0)
+  /*if ((file_fd = open ("user_config.cfg", O_RDONLY)) < 0)
   {
     perror("open:");
     return -1;
@@ -43,7 +43,7 @@ int main (int argc, char * const argv[])
 
   //read (file_fd, dbUsuarios, sizeof dbUsuarios);
 
- 	write(1,dbUsuarios,strlen(dbUsuarios));
+ 	write(1,dbUsuarios,strlen(dbUsuarios));*/
  	
 	// Recuperar argumentos de configuracion y tratar argumentos de ayuda
 	if ((puerto = recuperarParametros(argc, argv)) == -1)

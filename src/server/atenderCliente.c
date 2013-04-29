@@ -40,7 +40,10 @@ int atenderCliente(int fd_cliente)
 	 //Que lo lea del archivo de config	
 	char *prog[] = { "git", "pull", "origin", "master", NULL };
 	if(fork() == 0){
-		chdir("backups");
+		char path[20] = "backups";
+		strcat(path,"/");
+		strcat(path,datosUsuario.username);
+		chdir(path);
 		execvp(prog[0],prog);
 	}
 

@@ -8,7 +8,7 @@
 #include <fcntl.h>
 
 int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
-  int i = 0, fd = 0, linea = 0, cantidadLineas = 0;
+  int i = 0, fd = 0, linea = 0, lineaActual = 0;
   char * comando = strtok(mensaje, " ");
   char * usuarioMensaje = strtok(NULL, " ");
   char * passwordMensaje = strtok(NULL, " ");
@@ -45,19 +45,18 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
     write(1,"Error archivo de configuracion\n",31);
     return -1;
   }
-  
-  strcpy(lineas[cantidadLineas], token);
-  cantidadLineas++;
+
+  strcpy(lineas[lineaActual], token);
   
   while((token = strtok(NULL,"\n")) != NULL){
-    cantidadLineas++;
-    strcpy(lineas[cantidadLineas], token);
+    lineaActual++;
+    strcpy(lineas[lineaActual], token);
   }
 
   /*************BUSCAR COINCIDENCIA DE USUARIO - PASSWORD***************/
   //DEBERIAN ESTAR ENCRIPTADOS
 
-  for(i = 0; i<=cantidadLineas;i++){
+  for(i = 0; i<=lineaActual;i++){
     usuario = strtok(lineas[i], ":");
     password = strtok(NULL,":");
 
