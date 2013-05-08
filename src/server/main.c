@@ -2,7 +2,6 @@
 #include <sys/socket.h>
 #include <pthread.h>
 #include "headers/servidor.h"
-#include "headers/cliente.h"
 #include "headers/config.h"
 #include <string.h>
 #include <sys/types.h>
@@ -10,7 +9,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-#define CANT_HIJOS 2
+#define CANT_HIJOS 10
 
 int main (int argc, char * const argv[])
 {
@@ -19,15 +18,15 @@ int main (int argc, char * const argv[])
 	off_t fileSize;
 	unsigned long long fileSizeL;
 	struct sockaddr cliente;
+	DatosConfig configuracion; 
 	pthread_t tid;
 	char * dbUsuarios;
 
 	/********INICIALIZAR*****/
 	memset(&cliente,0, sizeof (struct sockaddr));
   /************************/
-
-
  
+ 	/*************** CARGAR TODO EL ARCHIVO DE USUARIOS EN DB **************/
 	if ((file_fd = open ("user_config.cfg", O_RDONLY)) < 0)
 	{
 		perror("open:");
@@ -40,12 +39,13 @@ int main (int argc, char * const argv[])
 
 	dbUsuarios = (char *) malloc(sizeof(char) * (fileSizeL+1) );
 
-	read (file_fd, dbUsuarios, fileSizeL+1);
-
-	write(1,dbUsuarios,fileSizeL+1);
- 	
+	read (file_fd, dbUsuarios, fileSizeL+1); //Este +1 que ondita??
+	configuracion.dbUsuarios = dbUsuarios;
+	/**********************************************************************/
 
 //**********Todo el archivo de usuarios queda en dbUsuarios*******************/
+
+	strncpy(configuracion.backupPath,"backups/",strlen("backups/"));
 	
 
 	// Recuperar argumentos de configuracion y tratar argumentos de ayuda
@@ -73,10 +73,9 @@ int main (int argc, char * const argv[])
 					die("No se pudo aceptar la conexion");
 				}
 
-				
 				/*****Codigo importante del hijo*********/
-				atenderCliente(fd_cliente);
-
+				atenderCliente(fd_cliente, &configuracion);
+				//write(1,"no llego",strlen("no llego"));
 				/* Cerrar el socket */
 				close(fd_cliente);
 	    	/****************************************/

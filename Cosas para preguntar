@@ -1,0 +1,10 @@
+-usamos memoria compartida para meter ahi la db de usuarios? o para que la usamos
+
+-la estructura la mandamos como puntero?
+- se puede reservar memoria en los header con [] //si se puede mirar de hacerlo dinamico..
+
+- que funcion podemos usar para encriptar o nos inventamos una? //usar aes por ej.
+- que funcion de resumen?? // sha o md5
+
+
+buscar funcion para leer metadata del archivo

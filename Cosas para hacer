@@ -1,0 +1,11 @@
+-crear semaforo para controlar los comandos PULL y hacer que esperen a que termine, por si el mismo usuario quiere tirar otro pull
+-en el cliente crear commit inicial para crear rama master
+
+-usar libevent para demonios
+
+-hacer que el programa lea los parametros por linea de comandos y si estos no existen, leerlos de un archivo de config
+-agregar encriptacion en la db de usuarios
+-la clave del usuario deberia ser una funcion resumen y el nombre tmb, pero no la del github
+
+
+

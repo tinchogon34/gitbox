@@ -1,4 +1,4 @@
-#include "headers/cliente.h"
+#include "headers/servidor.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/socket.h>
@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
-  int i = 0, fd = 0, linea = 0, lineaActual = 0;
+int validarUsuarioMensaje(char *mensaje, DatosUsuario * datosUsuario, DatosConfig *configuracion){
+  int i = 0, valido = 0, fd = 0, linea = 0, lineaActual = 0;
   char * comando = strtok(mensaje, " ");
   char * usuarioMensaje = strtok(NULL, " ");
   char * passwordMensaje = strtok(NULL, " ");
@@ -24,24 +24,17 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
   trimwhitespace(passwordMensaje);
   
   /*********TODO LISTA DE COMANDOS*********/
-  if(strcmp(comando, "PULL") != 0){
+  if(strcmp(comando, "PULL") != 0 && strcmp(comando, "STATUS") != 0){
     return -1;
   }
-
-  if ((fd = open ("user_config.cfg", O_RDONLY)) < 0)
-  {
-    perror("open:");
-    return -1;
-  }
-
-  read (fd, buffer, sizeof buffer);
-
-  close (fd);
-
-  //porq hay pocos usuarios alcanza sin while
-
+  
   /*************ARMAR UN ARRAY CON CADA LINEA DEL ARCHIVO CFG***********/
-  if((token = strtok(buffer, "\n")) == NULL){
+  char * aux = (char *)malloc(strlen(configuracion->dbUsuarios) * sizeof(char));
+  memset(aux, 0, strlen(configuracion->dbUsuarios)* sizeof(char));
+
+  strcpy(aux, configuracion->dbUsuarios);
+
+  if((token = strtok(aux, "\n")) == NULL){
     write(1,"Error archivo de configuracion\n",31);
     return -1;
   }
@@ -57,21 +50,31 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datos){
   //DEBERIAN ESTAR ENCRIPTADOS
 
   for(i = 0; i<=lineaActual;i++){
+    write(1,"for",3);
     usuario = strtok(lineas[i], ":");
-    password = strtok(NULL,":");
+    password = strtok(NULL,":"); //desencriptarla..
 
     if((strcmp(usuarioMensaje, usuario) == 0) && (strcmp(passwordMensaje, password)) == 0){
-      write(1,"se valido",strlen("se valido"));
+     // write(1,"se valido",strlen("se valido"));
 
-      strcpy(datos->username, usuario);
-      strcpy(datos->password, password);
-      strcpy(datos->usernameGit, strtok(NULL,":"));
-      strcpy(datos->passwordGit, strtok(NULL,":"));
-
-      return 0;
+      valido = 1;
+      strcpy(datosUsuario->username, usuario);
+      strcpy(datosUsuario->password, password);
+      strcpy(datosUsuario->usernameGit, strtok(NULL,":"));
+      strcpy(datosUsuario->passwordGit, strtok(NULL,":"));
+      break;
     }
-
   }
 
-  return -1;
+  if(!valido)
+    return -1; 
+
+
+  if(strcmp(comando, "PULL") == 0){
+    int status = procesarComandoPull(datosUsuario, configuracion->backupPath);
+    if(status != 0)
+      return -1;
+  }
+
+  return 0;
 }
