@@ -1,14 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <string.h>
-#include <netdb.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-
-#include <arpa/inet.h>
+#include "headers/cliente.h"
+#include "headers/util.h"
 
 #define PORT "2500" // the port client will be connecting to 
 
@@ -31,6 +22,10 @@ int main(int argc, char *argv[])
     struct addrinfo hints, *servinfo, *p;
     int rv;
     char s[INET6_ADDRSTRLEN];
+
+    int status = generarMontaje();
+    if(!status)
+        die("No se pudo montar!");
 
     if (argc != 2) {
         fprintf(stderr,"usage: client hostname\n");

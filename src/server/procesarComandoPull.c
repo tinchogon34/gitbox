@@ -21,7 +21,7 @@ int procesarComandoPull(DatosUsuario *datosUsuario, char * path){
   /*****ENTRAR A LA CARPETA DEL USUARIO Y HACER GIT PULL****/
   //Que lo lea del archivo de config (la direccion de la carpetas backups), el path debe terminar con /
 
-  char *prog[] = { "git", "pull", origin, "master", NULL };
+  char *command[] = { "git", "pull", origin, "master", NULL };
   //char *prog[] = { "sleep", "5", NULL };
   pid = fork();
  
@@ -34,7 +34,7 @@ int procesarComandoPull(DatosUsuario *datosUsuario, char * path){
       printf( "%d belongs to process group %d\n", getpid(), getpgrp() );
       strcat(path,datosUsuario->username);
       chdir(path);
-      execvp(prog[0], prog);
+      execvp(command[0], command);
       printf("*** ERROR: exec failed\n");
       exit(1);
 

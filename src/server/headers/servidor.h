@@ -1,23 +1,15 @@
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/socket.h>
-#include <string.h>
-#include <pthread.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <netdb.h>
-#include <errno.h>
-#include <semaphore.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
-
 #ifndef _SERVIDOR_H_
 	#define _SERVIDOR_H_
 
-	int iniciarServidor (int);
-
+  #include <string.h>
+  #include <stdlib.h>
+  #include <fcntl.h>
+  #include <sys/stat.h>
+  #include <errno.h>
+  #include <semaphore.h>
+  #include <sys/types.h>
+  #include <sys/wait.h>
+  #include <signal.h>
   #include <sys/socket.h>
   #include <unistd.h>
   #include <stdio.h>
@@ -44,5 +36,7 @@
   int procesarComandoPull (DatosUsuario *, char *);
 
   int procesarComandos (char *, DatosUsuario *, DatosConfig *);
+
+  int iniciarServidor (int);
 
 #endif

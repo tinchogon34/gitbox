@@ -19,7 +19,7 @@ int main (int argc, char * const argv[])
   /************************/
  
  	/*************** CARGAR TODO EL ARCHIVO DE USUARIOS EN DB **************/
-	if ((file_fd = open ("user_config.cfg", O_RDONLY)) < 0)
+	if ((file_fd = open ("db_usuarios", O_RDONLY)) < 0)
 	{
 		perror("open:");
 		return -1;

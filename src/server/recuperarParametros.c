@@ -38,7 +38,7 @@ int recuperarParametros(int argc, char * const argv[], DatosConfig *configuracio
 	}
 
 	/********LEER ARCHIVO DE CONFIGURACION***********/	 	
-	if ((fd = open ("gitbox.cfg", O_RDONLY)) < 0)
+	if ((fd = open ("server.cfg", O_RDONLY)) < 0)
 	{
 		perror("open:");
 		return -1;

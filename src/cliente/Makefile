@@ -1,8 +1,8 @@
-TARGETS = ../../bin/clienteGit
+TARGETS = ../../bin/cliente/clienteGit
 CC = gcc
 
-clienteGit: main.o
-	$(CC) -o ../../bin/$@ $^ -lpthread -lrt
+clienteGit: main.o generarMontaje.o util.o
+	$(CC) -o ../../bin/cliente/$@ $^ -lpthread -lrt
 
 clean:
 	rm -fv $(TARGETS) *.o *~
