@@ -1,0 +1,7 @@
+- Si no tenemos creadas las llaves pub & priv hacer un [ssh-keygen]
+
+- Hacer [ssh-copy-id -i ~/.ssh/id_rsa.pub 127.0.0.1] para copiar los datos de la llave pública en el archivo authorized_keys o [cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys]
+
+- Montar las carpetas usando [sshfs localhost:/source/ ./target/ -o IdentityFile=~/.ssh/id_rsa -o follow_symlinks]
+
+- Desmontar con [fusermount -u target]
