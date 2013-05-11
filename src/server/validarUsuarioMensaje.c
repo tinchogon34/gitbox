@@ -1,11 +1,4 @@
 #include "headers/servidor.h"
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/socket.h>
-#include <string.h>
-#include <pthread.h>
-#include <stdlib.h>
-#include <fcntl.h>
 
 int validarUsuarioMensaje(char *mensaje, DatosUsuario * datosUsuario, DatosConfig *configuracion){
   int i = 0, valido = 0, fd = 0, linea = 0, lineaActual = 0;
@@ -22,9 +15,11 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datosUsuario, DatosConfi
   /************************/
 
   trimwhitespace(passwordMensaje);
+  downcase(usuarioMensaje);
+  downcase(comando);
   
-  /*********TODO LISTA DE COMANDOS*********/
-  if(strcmp(comando, "PULL") != 0 && strcmp(comando, "STATUS") != 0){
+  /*********CERRAR CONEXION SI EL COMANDO NO EXISTE*********/
+  if(strcmp(comando, "pull") != 0 && strcmp(comando, "status") != 0){
     return -1;
   }
   
@@ -50,13 +45,10 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datosUsuario, DatosConfi
   //DEBERIAN ESTAR ENCRIPTADOS
 
   for(i = 0; i<=lineaActual;i++){
-    write(1,"for",3);
     usuario = strtok(lineas[i], ":");
     password = strtok(NULL,":"); //desencriptarla..
 
     if((strcmp(usuarioMensaje, usuario) == 0) && (strcmp(passwordMensaje, password)) == 0){
-     // write(1,"se valido",strlen("se valido"));
-
       valido = 1;
       strcpy(datosUsuario->username, usuario);
       strcpy(datosUsuario->password, password);
@@ -66,14 +58,13 @@ int validarUsuarioMensaje(char *mensaje, DatosUsuario * datosUsuario, DatosConfi
     }
   }
 
-  if(!valido)
-    return -1; 
+  if(!valido) // CERRAR CONEXION SI NO ES CORRECTO EL USUARIO O LA PASS
+    return -1;
 
-
-  if(strcmp(comando, "PULL") == 0){
-    int status = procesarComandoPull(datosUsuario, configuracion->backupPath);
-    if(status != 0)
-      return -1;
+  int status = procesarComandos(comando, datosUsuario, configuracion);
+  
+  if(status == -1){
+    return -1;
   }
 
   return 0;

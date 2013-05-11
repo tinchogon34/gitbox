@@ -1,15 +1,7 @@
-#include <stdio.h>
-#include <sys/socket.h>
-#include <pthread.h>
 #include "headers/servidor.h"
 #include "headers/config.h"
-#include <string.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
 
-#define CANT_HIJOS 10
+#define CANT_HIJOS 1
 
 int main (int argc, char * const argv[])
 {
@@ -45,15 +37,16 @@ int main (int argc, char * const argv[])
 
 //**********Todo el archivo de usuarios queda en dbUsuarios*******************/
 
-	strncpy(configuracion.backupPath,"backups/",strlen("backups/"));
+	//strncpy(configuracion.backupPath,"backups/",strlen("backups/"));
 	
 
 	// Recuperar argumentos de configuracion y tratar argumentos de ayuda
-	if ((puerto = recuperarParametros(argc, argv)) == -1)
+	if (recuperarParametros(argc, argv, &configuracion) != 0)
 		return -1;
 
+
 	// Iniciar servidor con el puerto indicado
-	fd = iniciarServidor(puerto);
+	fd = iniciarServidor(configuracion.puerto);
 
 	/* Preforkear un par */
 	for (i = 0; i < CANT_HIJOS; i++) {
@@ -75,9 +68,12 @@ int main (int argc, char * const argv[])
 
 				/*****Codigo importante del hijo*********/
 				atenderCliente(fd_cliente, &configuracion);
-				//write(1,"no llego",strlen("no llego"));
+				
 				/* Cerrar el socket */
-				close(fd_cliente);
+				if(close(fd_cliente) == -1){
+					die("No se pudo cerrar el socket");
+				}
+				
 	    	/****************************************/
 			}
 		}

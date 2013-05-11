@@ -1,10 +1,4 @@
 #include "headers/servidor.h"
-#include <string.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-
 
 int procesarComandoPull(DatosUsuario *datosUsuario, char * path){
 
@@ -28,17 +22,26 @@ int procesarComandoPull(DatosUsuario *datosUsuario, char * path){
   //Que lo lea del archivo de config (la direccion de la carpetas backups), el path debe terminar con /
 
   char *prog[] = { "git", "pull", origin, "master", NULL };
-  
+  //char *prog[] = { "sleep", "5", NULL };
   pid = fork();
-
-  if(pid == 0){ //hijo
-    //char path[20] = "backups/";
-    strcat(path,datosUsuario->username);
-    chdir(path);
-    execvp(prog[0],prog);
+ 
+  if (pid < 0) {     /* fork a child process           */
+      printf("*** ERROR: forking child process failed\n");
+      exit(1);
   }
+
+  else if (pid == 0) {          /* for the child process:         */
+      printf( "%d belongs to process group %d\n", getpid(), getpgrp() );
+      strcat(path,datosUsuario->username);
+      chdir(path);
+      execvp(prog[0], prog);
+      printf("*** ERROR: exec failed\n");
+      exit(1);
+
+  }
+  
   else{ //padre
-    waitpid(pid, &status, 0);
+      waitpid(pid, &status, 0);
     switch(status){
       case 0:
         return 0;
@@ -49,7 +52,6 @@ int procesarComandoPull(DatosUsuario *datosUsuario, char * path){
     }
   }
 
-  return 0;
 
   //recuperar el estado del git pull y devolverlo
 }

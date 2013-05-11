@@ -1,9 +1,4 @@
 #include "headers/servidor.h"
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/socket.h>
-#include <string.h>
-#include <pthread.h>
 
 //int clientesConectados = 0;
 
@@ -38,7 +33,6 @@ int atenderCliente(int fd_cliente, DatosConfig *configuracion)
 		return -1;
 	}
 
-	
 	return 0;
 }
 

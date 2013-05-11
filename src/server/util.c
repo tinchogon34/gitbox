@@ -28,3 +28,12 @@ void die(char *msg){
 void itos(char *string, int number){
   sprintf(string,"%d",number);
 }
+
+void downcase(char *string){
+  int i = 0;
+  
+  for(i = 0; string[i]; i++){
+    string[i] = tolower(string[i]);
+  }  
+}
+

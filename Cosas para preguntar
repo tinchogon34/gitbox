@@ -8,3 +8,10 @@
 
 
 buscar funcion para leer metadata del archivo
+
+
+/************************/
+
+- usamos mount --bind o sshfs ??
+mount --bind: necesita sudo, pero no muestra la carpeta en el explorador
+sshfs: no necesita sudo, pero muestra la carpeta
